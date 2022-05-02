@@ -5,7 +5,7 @@ import styles from './NewTask.module.css'
 
 function NewTasks(){
 
-    const history = useNavigate()
+    const navigate = useNavigate()
 
     function createPost(project) {
 
@@ -22,7 +22,7 @@ function NewTasks(){
         .then((data) => {
             console.log(data)
             //redirect
-            history("/tasks", {message: "Tarefa criada com sucesso"})
+            navigate('/tasks', {state: {message: "Tarefa criada com sucesso"}})
         })
         .catch(err => console.log(err))
 
