@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react'
 
 import Message from '../layout/Message'
 import Container from '../layout/Container'
+import Loading from '../layout/Loading'
 import LinkButton from '../layout/LinkButton'
 import TaskCard from '../tasks/TaskCard'
 
@@ -13,6 +14,7 @@ import styles from './Tasks.module.css'
 function Tasks(){
 
     const [projects, setProjects] = useState([])
+    const [removeLoading, setRemoveLoading] = useState(false)
 
     const location = useLocation()
     let message = ''
@@ -21,8 +23,8 @@ function Tasks(){
     }
 
     useEffect(()=>{
-
-        fetch('http://localhost:5000/tasks', {
+        setTimeout(()=>{
+            fetch('http://localhost:5000/tasks', {
             method: 'GET',
             headers:{
                 'Content-Type': 'application/json',
@@ -32,8 +34,11 @@ function Tasks(){
         .then((data)=>{
             console.log(data)
             setProjects(data)
+            setRemoveLoading(true)
         })
-        .catch((err)=>console.log(err))
+        .catch((err)=>console.log(err)) 
+        }, 300)
+        
     }, [])
 
     return (
@@ -54,6 +59,10 @@ function Tasks(){
                         />
                     ))
                 }
+                {!removeLoading && <Loading/>}
+                {removeLoading && projects.length === 0 && (
+                    <p>Não há projetos cadastrados!</p>
+                )}
             </Container>
         </div>
     )
